@@ -52,10 +52,12 @@ sub Run {
         "Mark ticket seen",
     );
 
+    my $Link = sprintf "%sAction=AgentMarkTicketSeen&TicketID=%s", $LayoutObject->{Baselink}, $TicketID;
+
     my $Snippet = qq~
         <div class="ArticleFilter MarkTicketSeen Icons" >
             <span class="InvisibleText">$Label</span>
-            <a href="#" id="MarkTicketSeenIcon"><i class="fa fa-eye"></i><span>$Label</span></a>
+            <a href="$Link" id="MarkTicketSeenIcon"><i class="fa fa-eye"></i><span>$Label</span></a>
         </div>
     ~;
 
@@ -64,28 +66,6 @@ sub Run {
     }{
         $Snippet $1
     }xms;
-
-    $LayoutObject->AddJSOnDocumentComplete(
-        Code => qq~
-            \$('#MarkTicketSeenIcon').bind( 'click', function() {
-                var FormData = {
-                    Action: 'AgentMarkTicketSeen',
-                    TicketID: $TicketID
-                };
-
-                if (!Core.Config.Get('SessionIDCookie')) {
-                    FormData[Core.Config.Get('SessionName')] = Core.Config.Get('SessionID');
-                    FormData[Core.Config.Get('CustomerPanelSessionName')] = Core.Config.Get('SessionID');
-                }
-
-                \$.ajax({
-                    url: Core.Config.Get('Baselink'),
-                    type: 'POST',
-                    data : FormData
-                });
-            });
-        ~,
-    );
 
     return 1;
 }

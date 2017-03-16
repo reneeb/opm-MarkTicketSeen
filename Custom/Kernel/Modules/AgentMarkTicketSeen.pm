@@ -70,11 +70,8 @@ sub Run {
         );
     }
 
-    return $LayoutObject->Attachment(
-        ContentType => 'application/json; charset=' . $LayoutObject->{Charset},
-        Content     => '{"Success":1}',
-        Type        => 'inline',
-        NoCache     => 1,
+    return $LayoutObject->Redirect(
+        OP => 'Action=AgentTicketZoom&TicketID=' . $TicketID,
     );
 }
 
