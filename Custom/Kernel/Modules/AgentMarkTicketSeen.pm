@@ -28,6 +28,7 @@ sub Run {
     my $ParamObject        = $Kernel::OM->Get('Kernel::System::Web::Request');
     my $LayoutObject       = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $TicketObject       = $Kernel::OM->Get('Kernel::System::Ticket');
+    my $ArticleObject      = $Kernel::OM->Get('Kernel::System::Ticket::Article');
 
     my $TicketID  = $ParamObject->GetParam( Param => 'TicketID' );
 
@@ -57,13 +58,14 @@ sub Run {
         );
     }
 
-    my @ArticleIndex = $TicketObject->ArticleIndex(
+    my @ArticleIndex = $ArticleObject->ArticleList(
         TicketID => $TicketID,
     );
 
-    for my $ArticleID ( @ArticleIndex ) {
-        $TicketObject->ArticleFlagSet(
-            ArticleID => $ArticleID,
+    for my $Article ( @ArticleIndex ) {
+        $ArticleObject->ArticleFlagSet(
+            ArticleID => $Article->{ArticleID},
+            TicketID  => $TicketID,
             Key       => 'Seen',
             Value     => 1,
             UserID    => $Self->{UserID},

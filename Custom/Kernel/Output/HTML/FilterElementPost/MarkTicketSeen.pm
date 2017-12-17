@@ -62,9 +62,9 @@ sub Run {
     ~;
 
     ${ $Param{Data} } =~ s{
-        ( <div \s+ class="\w+ \s+ Icons"> )
+        <div \s+ class="AdditionalInformation \s+ ControlRow"> \K
     }{
-        $Snippet $1
+        $Snippet
     }xms;
 
     return 1;
