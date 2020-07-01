@@ -62,12 +62,26 @@ sub Run {
         TicketID => $TicketID,
     );
 
+    my $Method = 'ArticleFlagSet';
+    my $Subaction = $ParamObject->GetParam( Param => 'Subaction' );
+    if ( lc $Subaction eq 'unseen' ) {
+        $Method = 'ArticleFlagDelete';
+    }
+
     for my $Article ( @ArticleIndex ) {
-        $ArticleObject->ArticleFlagSet(
+        $ArticleObject->$Method(
             ArticleID => $Article->{ArticleID},
             TicketID  => $TicketID,
             Key       => 'Seen',
             Value     => 1,
+            UserID    => $Self->{UserID},
+        );
+    }
+
+    if ( lc $Subaction eq 'unseen' ) {
+        $TicketObject->TicketFlagDelete(
+            TicketID  => $TicketID,
+            Key       => 'Seen',
             UserID    => $Self->{UserID},
         );
     }

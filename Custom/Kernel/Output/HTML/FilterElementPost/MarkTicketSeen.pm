@@ -48,16 +48,24 @@ sub Run {
 
     return 1 if ${$Param{Data}} =~ m{MarkTicketSeen Icons};
 
-    my $Label = $LayoutObject->{LanguageObject}->Translate(
+    my $LabelSeen = $LayoutObject->{LanguageObject}->Translate(
         "Mark ticket seen",
+    );
+
+    my $LabelUnseen = $LayoutObject->{LanguageObject}->Translate(
+        "Mark ticket unseen",
     );
 
     my $Link = sprintf "%sAction=AgentMarkTicketSeen&TicketID=%s", $LayoutObject->{Baselink}, $TicketID;
 
     my $Snippet = qq~
         <div class="ArticleFilter MarkTicketSeen Icons" >
-            <span class="InvisibleText">$Label</span>
-            <a href="$Link" id="MarkTicketSeenIcon"><i class="fa fa-eye"></i><span>$Label</span></a>
+            <span class="InvisibleText">$LabelSeen</span>
+            <a href="$Link" id="MarkTicketSeenIcon"><i class="fa fa-eye"></i><span>$LabelSeen</span></a>
+        </div>
+        <div class="ArticleFilter MarkTicketSeen Icons" >
+            <span class="InvisibleText">$LabelUnseen</span>
+            <a href="$Link&Subaction=Unseen" id="MarkTicketSeenIcon"><i class="fa fa-eye-slash"></i><span>$LabelUnseen</span></a>
         </div>
     ~;
 
